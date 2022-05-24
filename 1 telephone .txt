@@ -1,0 +1,127 @@
+// prac 1 dsa
+#include<iostream>
+using namespace std;
+#define h(x) x % 10
+void wochain();
+void woreplacement();
+void search();
+int data[10], flag[10], chain[10];
+int main() {
+  int ch;
+  do {
+    cout << "\n 1. Data lookup without chain";
+    cout << "\n 2. Data lookup with chain ";
+    cout << "\n 3. Search Element";
+    cout << "\n Enter your choice";
+    cin >> ch;
+    switch (ch) {
+    case 1:
+      wochain();
+      break;
+    case 2:
+      woreplacement();
+      break;
+    case 3:
+      search();
+      break;
+    }
+  } while (ch < 4);
+}
+void wochain() {
+  int loc, key, in ;
+  int i, j;
+  for (i = 0; i < 10; i++) {
+    flag[i] = 0;
+  }
+  for (i = 1; i <= 5; i++) {
+    cout << "\nenter Telephone number";
+    cin >> key;
+    loc = h(key);
+    if (flag[loc] == 0) {
+      data[loc] = key;
+      flag[loc] = 1;
+    } else {
+      j = loc; in = 0;
+      while (flag[j] == 1 && in < 10) {
+        j = (j + 1) % 10; in ++;
+      }
+      data[j] = key;
+      flag[j] = 1;
+    }
+  }
+  cout << "\n" << "Data" << "||" << "flag";
+  for (i = 0; i < 10; i++) {
+    cout << "\n" << data[i] << " ||" << flag[i];
+  }
+  int x;
+  cout << "enter data to search";
+  cin >> x;
+  for (i = 0; i < 10; i++) {
+    loc = h(x);
+    j = 0;
+    while (data[loc] != x && j < 10) {
+      loc = (loc + 1) % 10;
+      j++;
+    }
+  }
+  if (j == 10) {
+    cout << "\n data not present in hash table";
+  } else
+    cout << "\n data present at" << loc;
+}
+void woreplacement() {
+  int loc, key, in ;
+  int i, j;
+  for (i = 0; i < 10; i++) {
+    flag[i] = 0;
+    chain[i] = -1;
+  }
+  for (i = 1; i <= 5; i++) {
+    cout << "\n enter telephone number";
+    cin >> key;
+    loc = h(key);
+    if (flag[loc] == 0) {
+      data[loc] = key;
+      flag[loc] = 1;
+    } else {
+      j = loc; in = 0;
+      while (flag[j] == 1 && in < 10) {
+        j = (j + 1) % 10; in ++;
+      }
+      data[j] = key;
+      flag[j] = 1;
+      if (h(key) == h(data[loc])) {
+        while (chain[loc] != -1)
+          loc = chain[loc];
+chain[loc] = j;
+      }
+    }
+  }
+  cout << "\n" << "Data" << "||" << "flag" << "||" << "chain";
+  for (i = 0; i < 10; i++) {
+    cout << "\n" << data[i] << " ||" << flag[i] << " ||" << chain[i];
+  }
+}
+void search() {
+  int x, j, loc;
+  cout << "enter data to search";
+  cin >> x;
+  //for(i=0;i<10;i++) 
+  loc = h(x);
+  j = 0;
+  int flag = 0;
+  while (data[loc] != x && j < 10) {
+    if (h(x) == h(data[loc])) {
+      if (chain[loc] != -1) loc = chain[loc];
+      else
+        flag = 1;
+    } else
+      loc = (loc + 1) % 10;
+    j++;
+  }
+  if (j == 10 || flag == 1) {
+    cout << "\n data not present in hash table";
+  } else
+    cout << "\n data present at" << loc;
+}
+

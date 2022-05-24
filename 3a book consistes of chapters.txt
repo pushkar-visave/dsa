@@ -1,0 +1,186 @@
+#include<iostream>
+#include<cstring>
+
+#define m 5
+using namespace std;
+struct node
+{
+        string names;
+        node *c[m];
+};
+
+
+class Text
+{
+        private:
+                node *book;
+                char tname[10];
+                int ch_count;
+                int sec_count;
+                int sub_count;
+                
+        public:
+         Text()
+         {
+          book = new node;
+          for(int i=0;i<m;i++)
+          {
+      book->c[i]= new node;
+      for(int j=0;j<m;j++)
+           {
+       book->c[i]->c[j]= new node;
+       for(int k=0;k<m;k++)
+            {
+        book->c[i]->c[j]->c[k]= new node;        
+            }         
+           }        
+          }
+          
+          ch_count =0;
+          sec_count =0;
+          sub_count =0; 
+         }
+         
+         void insbook()
+         {
+          if(book->names =="")
+          {
+           cout<<"Enter The name of the book:";
+           cin>>tname;
+           book->names = tname;
+          }
+          else
+          {
+           cout<<"Book Already Exists!! Do You Want to Overwrite?(y/n)";
+           bool ch;
+           cin>>ch;
+           if(ch)
+           {
+            cout<<"Enter New book name :";
+            cin>>tname;
+            delete(book);
+            book = new node;
+            book->names = tname;
+           }
+        
+           
+          }
+         }
+         
+         
+         void inschapter()
+         {
+          if(ch_count == m)
+          {
+           cout<<"Maximum Chapter Entered !!";
+ 
+          }
+          else
+          {
+           for(int i =0;i<m;i++)
+           {
+            if(book->c[i]->names=="")
+            {
+             cout<<"Enter The Name of the chapter :";
+             cin>>tname;
+             //book->c[i] = new node;
+             book->c[i]->names = tname;
+             ch_count++;
+             break;
+            }
+           }
+          }
+         }
+         
+         
+         void inssec()
+         {
+          int chnos;
+          if(sec_count == m)
+          {
+           cout<<"Maximum Section Entered !!";
+ 
+          }
+          else
+          {
+           cout<<"Enter The Chapter Number :";
+           cin>>chnos;
+           cout<<"Enter Section Name :";
+           cin>>tname;
+           book->c[chnos-1]->c[sec_count]->names = tname;
+           sec_count++;
+           
+          }
+          
+         }
+         
+         
+         void inssub()
+         {
+          int chnos;
+          int secnos;
+          if(sub_count == m)
+          {
+           cout<<"Maximum Subsection Entered !!";
+ 
+          }
+          else
+          {
+           cout<<"Enter The Chapter Number :";
+           cin>>chnos;
+           
+           cout<<"Enter Sub-Section Number :";
+           cin>>secnos;
+           
+           cout<<"Enter Sub-Section Name :";
+           cin>>tname;
+           
+           book->c[chnos-1]->c[sec_count-1]->c[sub_count]->names = tname;
+           sub_count++;
+           
+          }
+          
+         }
+         
+         
+         
+         void display()
+         {
+          cout<<"##### Books #####"<<endl;
+          cout<<book->names<<endl;
+          int i=0;
+          cout<<"\t Chapter Names :"<<endl;
+          while(book->c[i]->names!="")
+          {
+           cout<<"\t"<<i+1<<"."<<book->c[i]->names<<endl;
+           int j=0;
+           
+           while(book->c[i]->c[j]->names!="")
+           {
+            cout<<"\t \t"<<char(65+j)<<"."<<book->c[i]->c[j]->names<<endl;
+            int k=0;
+            
+            while(book->c[i]->c[j]->c[k]->names!="")
+            {
+             cout<<"\t \t \t"<<char(65+k)<<"."<<book->c[i]->c[j]->c[k]->names<<endl;
+             k++;
+            }
+            j++;
+           }
+           i++;
+          }
+          
+         }
+};
+
+
+int main()
+{
+ Text t1;
+ t1.insbook();
+ t1.inschapter();
+ t1.inssec();
+ t1.inssub();
+ t1.inschapter();
+ t1.display();
+}
